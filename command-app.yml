@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: command-app
+  name: command-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: command-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: command-app
+    spec:
+      containers:
+      - image: registry.access.redhat.com/ubi9/httpd-24:9.7
+        name: web
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+## oc create deployment command-app --image registry.access.redhat.com/ubi9/httpd-24:9.7 --port 8080 --dry-run=client -o yaml > command-app.yml
+## oc expose deployment command-app --dry-run=client -o yaml
+## oc expose service command-app --dry-run=client -o yaml
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: command-app
+  name: command-app
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: command-app
+status:
+  loadBalancer: {}
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app: command-app
+  name: command-app
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: ""
+    name: command-app
+    weight: null
+status: {}
+
