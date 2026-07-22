@@ -1,0 +1,7 @@
+kind: Pod
+metadata:
+  name: command-pod
+spec:
+  containers:
+  - image: registry.access.redhat.com/ubi9/httpd-24:9.7
+    name: command-pod

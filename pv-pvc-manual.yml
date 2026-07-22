@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-static
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: ""
+  nfs:
+    path: /exports-ocp4/webdata
+    server: 192.168.50.254
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc1
+spec:
+  storageClassName: ""
+#nfs-storage
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 9Gi
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: travis-pod2
+
+spec:
+  containers:
+  - name: web
+    image: registry.access.redhat.com/ubi9/httpd-24:9.7
+    ports:
+    - containerPort: 8080
+    volumeMounts:
+    - mountPath: /var/www/html
+      name: cory-storage
+  volumes:
+  - name: cory-storage
+    persistentVolumeClaim:
+      claimName: pvc1

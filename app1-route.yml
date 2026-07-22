@@ -1,0 +1,18 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app: app1
+    app.kubernetes.io/component: app1
+    app.kubernetes.io/instance: app1
+  name: app1
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: ""
+    name: app1
+    weight: null
+status: {}
+# oc expose service app1 --dry-run=client -o yaml > app1-route.yml

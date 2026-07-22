@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemon-app
+  namespace: pimc
+spec:
+  selector:
+    matchLabels:
+      myapp: daemon-app
+  template:
+    metadata:
+      labels:
+        myapp: daemon-app
+    spec:
+      containers:
+        - name: web
+          image: registry.access.redhat.com/ubi9/httpd-24:9.7
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: pimc-cm
+data:
+  database: pimc
+  user: roberta
+
+# oc create configmap pimc-cm --from-file user --from-literal database=pimc --dry-run=client -o yaml > configmap.yml

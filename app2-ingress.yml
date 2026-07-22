@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: app2-ingress
+spec:
+  rules:
+  - host: app2-project1.apps.lab.ocp.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: app2
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer: {}
+# oc create ingress app2-ingress --rule="app2-project1.apps.lab.ocp.com/*=app2:8080" --dry-run=client -o yaml > app2-ingress.yml
