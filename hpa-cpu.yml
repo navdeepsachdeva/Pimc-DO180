@@ -1,0 +1,24 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: app1
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: app1
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+# oc autoscale deployment/app1 --min 2 --max 10 --cpu-percent 80 --dry-run=client -o yaml > hpa-cpu.yml
